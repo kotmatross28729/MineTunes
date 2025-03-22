@@ -86,16 +86,34 @@ public class Playlist {
         return null;
     }
 
-    public int nextSongIndex() {
-        switch (MTConfig.playMode) {
-            case 1:
-                return repeat();
-            case 2:
-                return loop();
-            case 3:
-                return shuffle();
+    public MP3Metadata prevSong() {
+        int index = prevSongIndex();
+        boolean valid = index >= 0 && index < metadataList.size();
+
+        if (valid) {
+            GuiPlaylistManager.selectCurrentSong(index);
+            return metadataList.get(index);
         }
-        return stop();
+
+        return null;
+    }
+
+    public int nextSongIndex() {
+        return switch (MTConfig.playMode) {
+            case 1 -> repeat();
+            case 2 -> loop(false);
+            case 3 -> shuffle(false);
+            default -> stop();
+        };
+    }
+
+    public int prevSongIndex() {
+        return switch (MTConfig.playMode) {
+            case 1 -> repeat();
+            case 2 -> loop(true);
+            case 3 -> shuffle(true);
+            default -> stop();
+        };
     }
 
     public int stop() {
@@ -106,22 +124,24 @@ public class Playlist {
         return GuiPlaylistManager.getCurrentSong();
     }
 
-    public int loop() {
+    public int loop(boolean prev) {
         int selected = GuiPlaylistManager.getCurrentSong();
-        int index = selected + 1;
+        int index = prev ? selected - 1 : selected + 1;
 
+        if (index < 0) index = metadataList.size() - 1;
         if (index >= metadataList.size()) index = 0;
 
         return index;
     }
-
-    public int shuffle() {
+    
+    private int lastSelectedIndex = -1;
+    public int shuffle(boolean prev) {
         int selected = GuiPlaylistManager.getCurrentSong();
         int size = metadataList.size();
         if (size < 2) return selected;
 
         int index = selected;
-        int next = loop();
+        int next = loop(prev);
         int tries = 0;
         while ((index == selected || index == next) && tries < 50) {
             index = rand.nextInt(size);
