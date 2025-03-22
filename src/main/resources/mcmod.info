@@ -1,17 +1,21 @@
-[
 {
-  "modid": "mineTunes",
-  "name": "mineTunes",
-  "description": "MineTunes is a Minecraft music player. Check the Keybinds for it in the Keybinds menu.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "logoFile": "",
-  "url": "http://www.vazkii.us",
-  "updateUrl": "",
-  "authorList": ["Vazkii"],
-  "credits": "JLayer and mp3agic",
-  "parent": "",
-  "screenshots": [],
-  "dependencies": []
+        "modListVersion": 2,
+        "modList": [{
+        "modid": "${modId}",
+        "name": "${modName}",
+        "description": "MineTunes is a Minecraft music player. Check the Keybinds for it in the Keybinds menu.",
+        "version": "${modVersion}",
+        "mcversion": "${minecraftVersion}",
+        "url": "http://www.vazkii.us",
+        "updateUrl": "",
+        "authorList": ["Vazkii"],
+        "credits": "JLayer and mp3agic",
+        "logoFile": "",
+        "screenshots": [],
+        "parent": "",
+        "requiredMods": [],
+        "dependencies": [],
+        "dependants": [],
+        "useDependencyInformation": false
+        }]
 }
-]

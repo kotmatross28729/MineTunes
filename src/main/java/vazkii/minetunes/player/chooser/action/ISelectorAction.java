@@ -4,6 +4,6 @@ import java.io.File;
 
 public interface ISelectorAction {
 
-	public void select(File file);
-	
+    public void select(File file);
+
 }

@@ -8,22 +8,23 @@ import net.minecraft.util.StatCollector;
 
 public class Filter extends FileFilter implements java.io.FileFilter {
 
-	String desc;
-	String accept;
-	
-	public Filter(String name, String accept) {
-		desc = StatCollector.translateToLocal(name);
-		this.accept = accept;
-	}
-	
-	@Override
-	public boolean accept(File f) {
-		return f.isDirectory() || f.getName().endsWith(accept);
-	}
+    String desc;
+    String accept;
 
-	@Override
-	public String getDescription() {
-		return desc;
-	}
+    public Filter(String name, String accept) {
+        desc = StatCollector.translateToLocal(name);
+        this.accept = accept;
+    }
+
+    @Override
+    public boolean accept(File f) {
+        return f.isDirectory() || f.getName()
+            .endsWith(accept);
+    }
+
+    @Override
+    public String getDescription() {
+        return desc;
+    }
 
 }

@@ -16,8 +16,8 @@ public class ID3v2ChapterFrameData extends AbstractID3v2FrameData {
         super(unsynchronisation);
     }
 
-    public ID3v2ChapterFrameData(boolean unsynchronisation, String id, int startTime,
-            int endTime, int startOffset, int endOffset) {
+    public ID3v2ChapterFrameData(boolean unsynchronisation, String id, int startTime, int endTime, int startOffset,
+        int endOffset) {
         super(unsynchronisation);
         this.id = id;
         this.startTime = startTime;
@@ -26,17 +26,16 @@ public class ID3v2ChapterFrameData extends AbstractID3v2FrameData {
         this.endOffset = endOffset;
     }
 
-    public ID3v2ChapterFrameData(boolean unsynchronisation, byte[] bytes)
-            throws InvalidDataException {
+    public ID3v2ChapterFrameData(boolean unsynchronisation, byte[] bytes) throws InvalidDataException {
         super(unsynchronisation);
         synchroniseAndUnpackFrameData(bytes);
     }
 
     protected void unpackFrameData(byte[] bytes) throws InvalidDataException {
         ByteBuffer bb = ByteBuffer.wrap(bytes);
-        
+
         id = ByteBufferUtils.extractNullTerminatedString(bb);
-        
+
         bb.position(id.length() + 1);
         startTime = bb.getInt();
         endTime = bb.getInt();
@@ -127,8 +126,7 @@ public class ID3v2ChapterFrameData extends AbstractID3v2FrameData {
     protected int getLength() {
         int length = 1;
         length += 16;
-        if (id != null)
-            length += id.length();
+        if (id != null) length += id.length();
         if (subframes != null) {
             for (ID3v2Frame frame : subframes) {
                 length += frame.getLength();
@@ -156,47 +154,35 @@ public class ID3v2ChapterFrameData extends AbstractID3v2FrameData {
         return builder.toString();
     }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + endOffset;
-		result = prime * result + endTime;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + startOffset;
-		result = prime * result + startTime;
-		result = prime * result
-				+ ((subframes == null) ? 0 : subframes.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + endOffset;
+        result = prime * result + endTime;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + startOffset;
+        result = prime * result + startTime;
+        result = prime * result + ((subframes == null) ? 0 : subframes.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ID3v2ChapterFrameData other = (ID3v2ChapterFrameData) obj;
-		if (endOffset != other.endOffset)
-			return false;
-		if (endTime != other.endTime)
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (startOffset != other.startOffset)
-			return false;
-		if (startTime != other.startTime)
-			return false;
-		if (subframes == null) {
-			if (other.subframes != null)
-				return false;
-		} else if (!subframes.equals(other.subframes))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        if (getClass() != obj.getClass()) return false;
+        ID3v2ChapterFrameData other = (ID3v2ChapterFrameData) obj;
+        if (endOffset != other.endOffset) return false;
+        if (endTime != other.endTime) return false;
+        if (id == null) {
+            if (other.id != null) return false;
+        } else if (!id.equals(other.id)) return false;
+        if (startOffset != other.startOffset) return false;
+        if (startTime != other.startTime) return false;
+        if (subframes == null) {
+            if (other.subframes != null) return false;
+        } else if (!subframes.equals(other.subframes)) return false;
+        return true;
+    }
 }

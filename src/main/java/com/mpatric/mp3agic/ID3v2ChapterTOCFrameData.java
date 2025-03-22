@@ -17,8 +17,8 @@ public class ID3v2ChapterTOCFrameData extends AbstractID3v2FrameData {
         super(unsynchronisation);
     }
 
-    public ID3v2ChapterTOCFrameData(boolean unsynchronisation, boolean isRoot, boolean isOrdered,
-            String id, String[] children) {
+    public ID3v2ChapterTOCFrameData(boolean unsynchronisation, boolean isRoot, boolean isOrdered, String id,
+        String[] children) {
         super(unsynchronisation);
         this.isRoot = isRoot;
         this.isOrdered = isOrdered;
@@ -26,8 +26,7 @@ public class ID3v2ChapterTOCFrameData extends AbstractID3v2FrameData {
         this.children = children;
     }
 
-    public ID3v2ChapterTOCFrameData(boolean unsynchronisation, byte[] bytes)
-            throws InvalidDataException {
+    public ID3v2ChapterTOCFrameData(boolean unsynchronisation, byte[] bytes) throws InvalidDataException {
         super(unsynchronisation);
         synchroniseAndUnpackFrameData(bytes);
     }
@@ -60,7 +59,7 @@ public class ID3v2ChapterTOCFrameData extends AbstractID3v2FrameData {
         }
 
     }
-    
+
     public void addSubframe(String id, AbstractID3v2FrameData frame) {
         subframes.add(new ID3v2Frame(id, frame.toBytes()));
     }
@@ -70,9 +69,9 @@ public class ID3v2ChapterTOCFrameData extends AbstractID3v2FrameData {
         bb.put(id.getBytes());
         bb.put((byte) 0);
         bb.put(getFlags());
-        bb.put((byte)children.length);
-        
-        for(String child: children) {
+        bb.put((byte) children.length);
+
+        for (String child : children) {
             bb.put(child.getBytes());
             bb.put((byte) 0);
         }
@@ -89,12 +88,12 @@ public class ID3v2ChapterTOCFrameData extends AbstractID3v2FrameData {
 
     private byte getFlags() {
         byte b = 0;
-        
-        if(isRoot) {
+
+        if (isRoot) {
             b |= 0x01;
         }
-        
-        if(isOrdered) {
+
+        if (isOrdered) {
             b |= 0x02;
         }
         return b;
@@ -131,7 +130,7 @@ public class ID3v2ChapterTOCFrameData extends AbstractID3v2FrameData {
     public void setChildren(String[] children) {
         this.children = children;
     }
-    
+
     @Deprecated
     public String[] getChilds() {
         return children;
@@ -185,44 +184,33 @@ public class ID3v2ChapterTOCFrameData extends AbstractID3v2FrameData {
         return builder.toString();
     }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Arrays.hashCode(children);
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + (isOrdered ? 1231 : 1237);
-		result = prime * result + (isRoot ? 1231 : 1237);
-		result = prime * result
-				+ ((subframes == null) ? 0 : subframes.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Arrays.hashCode(children);
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + (isOrdered ? 1231 : 1237);
+        result = prime * result + (isRoot ? 1231 : 1237);
+        result = prime * result + ((subframes == null) ? 0 : subframes.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ID3v2ChapterTOCFrameData other = (ID3v2ChapterTOCFrameData) obj;
-		if (!Arrays.equals(children, other.children))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (isOrdered != other.isOrdered)
-			return false;
-		if (isRoot != other.isRoot)
-			return false;
-		if (subframes == null) {
-			if (other.subframes != null)
-				return false;
-		} else if (!subframes.equals(other.subframes))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        if (getClass() != obj.getClass()) return false;
+        ID3v2ChapterTOCFrameData other = (ID3v2ChapterTOCFrameData) obj;
+        if (!Arrays.equals(children, other.children)) return false;
+        if (id == null) {
+            if (other.id != null) return false;
+        } else if (!id.equals(other.id)) return false;
+        if (isOrdered != other.isOrdered) return false;
+        if (isRoot != other.isRoot) return false;
+        if (subframes == null) {
+            if (other.subframes != null) return false;
+        } else if (!subframes.equals(other.subframes)) return false;
+        return true;
+    }
 }

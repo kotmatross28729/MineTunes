@@ -6,11 +6,11 @@ import vazkii.minetunes.gui.GuiDevTools;
 
 public class ActionDebug implements ISelectorAction {
 
-	public static final ActionDebug instance = new ActionDebug();
-	
-	@Override
-	public void select(File file) {
-		GuiDevTools.debugLog("File: " + file.getAbsolutePath());		
-	}
+    public static final ActionDebug instance = new ActionDebug();
+
+    @Override
+    public void select(File file) {
+        GuiDevTools.debugLog("File: " + file.getAbsolutePath());
+    }
 
 }

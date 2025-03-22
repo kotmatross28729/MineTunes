@@ -14,61 +14,60 @@ import vazkii.minetunes.playlist.Playlist;
 
 public class ProviderM3U extends PlaylistProvider {
 
-	public static final ProviderM3U instance = new ProviderM3U();
+    public static final ProviderM3U instance = new ProviderM3U();
 
-	@Override
-	public Playlist provide(File file, IProviderStateCallback callback) {
-		foundFiles = 0;
-		processedFiles = 0;
+    @Override
+    public Playlist provide(File file, IProviderStateCallback callback) {
+        foundFiles = 0;
+        processedFiles = 0;
 
-		this.callback = callback;
-		Set<MP3Metadata> metadataSet = new TreeSet();
+        this.callback = callback;
+        Set<MP3Metadata> metadataSet = new TreeSet();
 
-		List<String> lines = new ArrayList();
+        List<String> lines = new ArrayList();
 
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = null;
-			while((line = reader.readLine()) != null) {
-				line = line.trim();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
 
-				if(!line.startsWith("#") && line.endsWith(".mp3")) {
-					lines.add(line);
-					foundFiles++;
-					updateState();
-				}
-			}
+                if (!line.startsWith("#") && line.endsWith(".mp3")) {
+                    lines.add(line);
+                    foundFiles++;
+                    updateState();
+                }
+            }
 
-			reader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		File parent = file.getParentFile();
-		for(String line : lines) {
-			if(!line.startsWith("/"))
-				line = "/" + line;
-			
-			File mp3 = new File(parent, line);
-			if(mp3.exists()) {
-				try {
-					name = line;
-					metadataSet.add(new MP3Metadata(mp3));
-					processedFiles++;
-					updateState();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else GuiDevTools.debugLog(line + " does not exist, skipping");
-		}
+        File parent = file.getParentFile();
+        for (String line : lines) {
+            if (!line.startsWith("/")) line = "/" + line;
 
-		Playlist playlist = new Playlist(file, metadataSet);
-		return playlist;
-	}
+            File mp3 = new File(parent, line);
+            if (mp3.exists()) {
+                try {
+                    name = line;
+                    metadataSet.add(new MP3Metadata(mp3));
+                    processedFiles++;
+                    updateState();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else GuiDevTools.debugLog(line + " does not exist, skipping");
+        }
 
-	@Override
-	public String getDescription() {
-		return "M3U Playlist Provider";
-	}
+        Playlist playlist = new Playlist(file, metadataSet);
+        return playlist;
+    }
+
+    @Override
+    public String getDescription() {
+        return "M3U Playlist Provider";
+    }
 
 }
