@@ -41,6 +41,9 @@ public class ThreadMusicPlayer extends Thread {
         try {
             GuiDevTools.debugLog("Starting " + this);
             while (!kill) {
+                if (Thread.interrupted()) {
+                    break;
+                }
                 if (queued && playingMP3 != null) {
                     GuiDevTools.debugLog("Queued: " + playingMP3.file.getAbsolutePath());
                     if (player != null) resetPlayer();
@@ -94,15 +97,6 @@ public class ThreadMusicPlayer extends Thread {
             playingMP3 = null;
             resetPlayer();
         }
-    }
-
-    public void resetPlayer() {
-        GuiDevTools.debugLog("Resetting Player.");
-
-        playing = false;
-        if (player != null) player.close();
-
-        player = null;
     }
 
     public void play(MP3Metadata metadata) {
@@ -178,13 +172,28 @@ public class ThreadMusicPlayer extends Thread {
         return paused && playingMP3 != null;
     }
 
+    public void resetPlayer() {
+        GuiDevTools.debugLog("Resetting Player.");
+
+        playing = false;
+        if (player != null) player.close();
+
+        player = null;
+    }
+
+    public void resetVars() {
+        GuiDevTools.debugLog("Resetting Variables.");
+
+        player = null;
+        playingMP3 = null;
+    }
+
     public void forceKill() {
         try {
-            resetPlayer();
-            interrupt();
-
-            finalize();
             kill = true;
+            resetPlayer();
+            resetVars();
+            interrupt();
         } catch (Throwable e) {
             GuiDevTools.logThrowable(e);
         }

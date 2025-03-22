@@ -15,6 +15,7 @@ public class KeySubscriber {
 
     public static float delta = 0;
     float lastPartTicks = 0;
+    boolean restarted = false;
 
     @SubscribeEvent
     public void playerTick(RenderTickEvent event) {
@@ -23,6 +24,7 @@ public class KeySubscriber {
         lastPartTicks = event.renderTickTime;
 
         if (Minecraft.getMinecraft().thePlayer != null) {
+            restarted = false;
             if (event.phase == Phase.START) {
                 for (KeyBinding key : KeyBindings.handlers.keySet()) {
                     KeyHandler handler = KeyBindings.handlers.get(key);
@@ -31,8 +33,11 @@ public class KeySubscriber {
                 }
             } else HUDHandler.showVolume = false;
         } else if (MineTunes.musicPlayerThread != null) {
-            MineTunes.musicPlayerThread.forceKill();
-            MineTunes.startMusicPlayerThread();
+            if (!restarted) {
+                MineTunes.musicPlayerThread.forceKill();
+                MineTunes.startMusicPlayerThread();
+                restarted = true;
+            }
         }
     }
 

@@ -133,8 +133,9 @@ public class Playlist {
 
         return index;
     }
-    
+
     private int lastSelectedIndex = -1;
+
     public int shuffle(boolean prev) {
         int selected = GuiPlaylistManager.getCurrentSong();
         int size = metadataList.size();
