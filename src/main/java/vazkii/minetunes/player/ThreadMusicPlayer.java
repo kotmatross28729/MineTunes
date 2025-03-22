@@ -1,6 +1,8 @@
 package vazkii.minetunes.player;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.JavaSoundAudioDevice;
 import javazoom.jl.player.advanced.AdvancedPlayer;
@@ -29,6 +31,8 @@ public class ThreadMusicPlayer extends Thread {
     volatile boolean playing = false;
     volatile boolean paused = false;
     volatile int pauseFrames = 0;
+
+    volatile List<MP3Metadata> lastSongs = new ArrayList();
 
     public ThreadMusicPlayer() {
         setDaemon(true);
@@ -71,7 +75,7 @@ public class ThreadMusicPlayer extends Thread {
 
                 if (played && !paused && !queued) {
                     GuiDevTools.debugLog("Song done, next...");
-                    next();
+                    next(true);
                 }
             }
         } catch (Exception e) {
@@ -79,10 +83,10 @@ public class ThreadMusicPlayer extends Thread {
         }
     }
 
-    public void next() {
+    public void next(boolean add) {
         Playlist playlist = GuiPlaylistManager.getCurrentPlaylist();
         MP3Metadata mp3 = playlist == null ? null : playlist.nextSong();
-        if (mp3 != null) play(mp3);
+        if (mp3 != null) play(mp3, add);
         else {
             playingMP3 = null;
             resetPlayer();
@@ -90,21 +94,35 @@ public class ThreadMusicPlayer extends Thread {
     }
 
     public void prev() {
-        Playlist playlist = GuiPlaylistManager.getCurrentPlaylist();
-        MP3Metadata mp3 = playlist == null ? null : playlist.prevSong();
-        if (mp3 != null) play(mp3);
-        else {
-            playingMP3 = null;
-            resetPlayer();
-        }
+        if (lastSongs.size() < 2) return;
+
+        removeFromLastPlayed(lastSongs.get(lastSongs.size() - 1));
+        MP3Metadata meta = lastSongs.get(lastSongs.size() - 1);
+        play(meta, false);
     }
 
     public void play(MP3Metadata metadata) {
+        play(metadata, true);
+    }
+
+    public void play(MP3Metadata metadata, boolean add) {
         resetPlayer();
+
+        if (add) addToLastPlayed(metadata);
 
         playingMP3 = metadata;
         paused = false;
         queued = true;
+    }
+
+    private void addToLastPlayed(MP3Metadata meta) {
+        lastSongs.add(meta);
+
+        while (lastSongs.size() > 10) lastSongs.remove(0);
+    }
+
+    private void removeFromLastPlayed(MP3Metadata meta) {
+        lastSongs.remove(meta);
     }
 
     public void pauseOrPlay() {
@@ -119,7 +137,9 @@ public class ThreadMusicPlayer extends Thread {
         }
     }
 
-    public void onPlaylistChange() {}
+    public void onPlaylistChange() {
+        lastSongs.clear();
+    }
 
     public float getGain() {
         if (player == null) return gain;

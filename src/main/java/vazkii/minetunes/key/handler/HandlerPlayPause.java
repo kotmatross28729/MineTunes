@@ -15,7 +15,7 @@ public class HandlerPlayPause extends KeyHandler {
             if (MineTunes.musicPlayerThread != null) MineTunes.musicPlayerThread.pauseOrPlay();
             else {
                 MineTunes.startMusicPlayerThread();
-                MineTunes.musicPlayerThread.next();
+                MineTunes.musicPlayerThread.next(true);
             }
         }
 

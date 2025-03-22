@@ -23,7 +23,7 @@ public class HandlerVolume extends KeyHandler {
         if (isInValidGui() && MineTunes.musicPlayerThread != null) if (GuiScreen.isCtrlKeyDown()) {
             if (!down) {
                 if (positive) MineTunes.musicPlayerThread.prev();
-                else MineTunes.musicPlayerThread.next();
+                else MineTunes.musicPlayerThread.next(true);
             }
         } else {
             float gainVal = 0.5F * KeySubscriber.delta;
