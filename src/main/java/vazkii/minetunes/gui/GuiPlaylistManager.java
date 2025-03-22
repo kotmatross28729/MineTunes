@@ -1,6 +1,7 @@
 package vazkii.minetunes.gui;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import vazkii.minetunes.MineTunes;
@@ -193,6 +195,17 @@ public class GuiPlaylistManager extends GuiMineTunes {
     protected void mouseClicked(int b, int x, int y) {
         if (MineTunes.playlistCreatorThread == null) playlistNameField.mouseClicked(b, x, y);
         super.mouseClicked(b, x, y);
+    }
+    
+    @Override
+    public void handleMouseInput() {
+//        int mouseX = Mouse.getEventX() * width / mc.displayWidth;
+//        int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
+        
+        super.handleMouseInput();
+//        if(musicSlot != null)
+//            musicSlot.handleMouseInput(mouseX, mouseY);
+//        playlistSlot.handleMouseInput(mouseX, mouseY);
     }
 
     @Override
