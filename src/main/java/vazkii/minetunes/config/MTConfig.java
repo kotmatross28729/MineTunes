@@ -17,12 +17,14 @@ public final class MTConfig {
     private static final String TAG_HUD_POS_X = "hudPosX";
     private static final String TAG_HUD_POS_Y = "hudPosY";
 
-    public static int playMode = 0;
+    private static final String TAG_TIME_DISPLAY_MODE = "timeDisplayMode";
 
+    public static int playMode = 0;
     public static boolean hudEnabled = true;
     public static int hudRelativeTo = 0;
     public static int hudPosX = 0;
     public static int hudPosY = 0;
+    public static int timeDisplayMode = 0;
 
     public static void findCompoundAndLoad() {
         try {
@@ -37,6 +39,8 @@ public final class MTConfig {
                 hudRelativeTo = cmp.getInteger(TAG_HUD_RELATIVE_TO);
                 hudPosX = cmp.getInteger(TAG_HUD_POS_X);
                 hudPosY = cmp.getInteger(TAG_HUD_POS_Y);
+
+                timeDisplayMode = cmp.getInteger(TAG_TIME_DISPLAY_MODE);
             }
         } catch (IOException e) {
             GuiDevTools.logThrowable(e);
@@ -60,6 +64,8 @@ public final class MTConfig {
         cmp.setInteger(TAG_HUD_RELATIVE_TO, hudRelativeTo);
         cmp.setInteger(TAG_HUD_POS_X, hudPosX);
         cmp.setInteger(TAG_HUD_POS_Y, hudPosY);
+
+        cmp.setInteger(TAG_TIME_DISPLAY_MODE, timeDisplayMode);
 
         CacheHelper.injectNBTToFile(f, cmp);
     }

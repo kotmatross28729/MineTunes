@@ -38,6 +38,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
     GuiButton moveHudButton;
     GuiButton playModeButton;
 
+    GuiButton timeDisplayModeButton;
+
     GuiButton selectPlaylistButton;
     GuiButton deletePlaylistButton;
     GuiButton reloadPlaylistButton;
@@ -80,6 +82,15 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 170,
                 20,
                 StatCollector.translateToLocal("minetunes.gui.playMode0")));
+
+        buttonList.add(
+            timeDisplayModeButton = new GuiButton(
+                8,
+                305,
+                5,
+                170,
+                20,
+                StatCollector.translateToLocal("minetunes.gui.timeDisplayMode0")));
 
         buttonList.add(
             selectPlaylistButton = new GuiButton(
@@ -178,6 +189,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
         showHudButton.displayString = StatCollector.translateToLocal("minetunes.gui.showHud_" + MTConfig.hudEnabled);
         moveHudButton.enabled = MTConfig.hudEnabled;
         playModeButton.displayString = StatCollector.translateToLocal("minetunes.gui.playMode" + MTConfig.playMode);
+        timeDisplayModeButton.displayString = StatCollector
+            .translateToLocal("minetunes.gui.timeDisplayMode" + MTConfig.timeDisplayMode);
 
         searchField.drawTextBox();
         if (searchField.getText()
@@ -258,24 +271,18 @@ public class GuiPlaylistManager extends GuiMineTunes {
             : null;
 
         switch (button.id) {
-            case 0:
-                mc.displayGuiScreen(null);
-                break;
-            case 1:
-                mc.displayGuiScreen(new GuiDevTools());
-                break;
-            case 2:
+            case 0 -> mc.displayGuiScreen(null);
+            case 1 -> mc.displayGuiScreen(new GuiDevTools());
+            case 2 -> {
                 MTConfig.hudEnabled = !MTConfig.hudEnabled;
                 configChanged = true;
-                break;
-            case 3:
-                mc.displayGuiScreen(new GuiMoveHUD());
-                break;
-            case 4:
+            }
+            case 3 -> mc.displayGuiScreen(new GuiMoveHUD());
+            case 4 -> {
                 MTConfig.playMode = MTConfig.playMode == 3 ? 0 : MTConfig.playMode + 1;
                 configChanged = true;
-                break;
-            case 5:
+            }
+            case 5 -> {
                 String name = playlistNameField.getText();
                 playlistNameField.setText("");
                 playlistSlot.resetScroll();
@@ -283,24 +290,24 @@ public class GuiPlaylistManager extends GuiMineTunes {
                     PlaylistFilter.instance,
                     JFileChooser.FILES_AND_DIRECTORIES,
                     ActionMakePlaylist.instance.withName(name));
-                break;
-            case 6:
+            }
+            case 6 -> {
                 if (currentPlaylist == selectedPlaylist && MineTunes.musicPlayerThread != null)
                     MineTunes.musicPlayerThread.resetPlayer();
-
                 PlaylistList.playlistNames.remove(selectedPlaylist);
                 PlaylistList.playlists.remove(playlistName);
                 selectedPlaylist = 0;
-
                 PlaylistList.findCompoundAndWrite();
-
-                break;
-            case 7:
+            }
+            case 7 -> {
                 actionPerformed(deletePlaylistButton);
                 ActionMakePlaylist.instance.withName(playlistName)
                     .select(playlistFile);
-
-                break;
+            }
+            case 8 -> {
+                MTConfig.timeDisplayMode = MTConfig.timeDisplayMode == 1 ? 0 : MTConfig.timeDisplayMode + 1;
+                configChanged = true;
+            }
         }
 
         if (configChanged) MTConfig.findCompoundAndWrite();

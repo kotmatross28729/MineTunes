@@ -43,10 +43,21 @@ public final class HUDHandler {
                 int noteWidth = mc.fontRenderer.getStringWidth(note) * 2;
                 int noteSpace = 4;
 
-                String time = MP3Metadata.getLengthStr(
-                    (int) ((double) meta.lengthMs
-                        - (double) meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed()));
-                String title = meta.title + " (" + time + ")";
+                String title = "";
+
+                if (MTConfig.timeDisplayMode == 0) {
+                    String time = MP3Metadata.getLengthStr(
+                        (int) ((double) meta.lengthMs
+                            - (double) meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed()));
+                    title = meta.title + " (" + time + ")";
+                } else if (MTConfig.timeDisplayMode == 1) {
+                    int elapsedMs = (int) (meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed());
+                    String elapsedTime = MP3Metadata.getLengthStr(elapsedMs);
+                    String totalTime = MP3Metadata.getLengthStr(meta.lengthMs);
+                    String time = elapsedTime + " / " + totalTime;
+                    title = meta.title + " (" + time + ")";
+                }
+
                 String artist = meta.artist;
                 String volume = showVolume ? (String.format(
                     StatCollector.translateToLocal("minetunes.gui.volume"),
