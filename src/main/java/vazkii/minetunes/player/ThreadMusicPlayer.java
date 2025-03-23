@@ -58,19 +58,23 @@ public class ThreadMusicPlayer extends Thread {
                 }
 
                 boolean played = false;
-                if (player != null && player.getAudioDevice() != null) {
-                    if (pauseFrames == 0) {
-                        GuiDevTools.debugLog("Playing File");
-                        player.play();
-                        playing = true;
-                    } else if (!paused) {
-                        GuiDevTools.debugLog("Was paused, restarting at " + pauseFrames);
-                        int startFrame = pauseFrames;
-                        pauseFrames = 0;
-                        player.play(startFrame, Integer.MAX_VALUE);
-                        playing = true;
+                try {
+                    if (player != null && player.getAudioDevice() != null) {
+                        if (pauseFrames == 0) {
+                            GuiDevTools.debugLog("Playing File");
+                            player.play();
+                            playing = true;
+                        } else if (!paused) {
+                            GuiDevTools.debugLog("Was paused, restarting at " + pauseFrames);
+                            int startFrame = pauseFrames;
+                            pauseFrames = 0;
+                            player.play(startFrame, Integer.MAX_VALUE);
+                            playing = true;
+                        }
+                        played = true;
                     }
-                    played = true;
+                } catch (Exception e) { // FUCK OFF
+                    GuiDevTools.debugLog("Something broke, don't give a shit");
                 }
 
                 if (played && !paused && !queued) {

@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.config.GuiButtonExt;
 
 public class GuiMusicSlider extends GuiButtonExt {
+
     public double sliderValue = 1.0F;
 
     public String dispString = "";
@@ -57,11 +58,12 @@ public class GuiMusicSlider extends GuiButtonExt {
             displayString = "";
         }
     }
+
     @Override
     public int getHoverState(boolean par1) {
         return 0;
     }
-	
+
     @Override
     protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3) {
         if (this.visible) {
@@ -87,7 +89,7 @@ public class GuiMusicSlider extends GuiButtonExt {
                 20);
         }
     }
-	
+
     @Override
     public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
         if (super.mousePressed(par1Minecraft, par2, par3)) {
@@ -143,7 +145,7 @@ public class GuiMusicSlider extends GuiButtonExt {
     public void mouseReleased(int par1, int par2) {
         this.dragging = false;
     }
-	
+
     public double getValue() {
         return sliderValue * (maxValue - minValue) + minValue;
     }
@@ -153,6 +155,7 @@ public class GuiMusicSlider extends GuiButtonExt {
     }
 
     public static interface ISlider {
+
         void onChangeSliderValue(GuiMusicSlider slider);
     }
 }

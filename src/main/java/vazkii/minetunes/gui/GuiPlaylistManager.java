@@ -252,9 +252,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
     @Override
     protected void mouseClicked(int b, int x, int y) {
-        if (MineTunes.playlistCreatorThread == null) 
-            playlistNameField.mouseClicked(b, x, y);
-        
+        if (MineTunes.playlistCreatorThread == null) playlistNameField.mouseClicked(b, x, y);
+
         searchField.mouseClicked(b, x, y);
         songPositionSlider.mousePressed(Minecraft.getMinecraft(), x, y);
 
@@ -330,7 +329,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 configChanged = true;
             }
             case 9 -> {
-                if(MineTunes.musicPlayerThread != null) {
+                if (MineTunes.musicPlayerThread != null) {
                     float newFraction = (float) songPositionSlider.sliderValue;
                     MineTunes.musicPlayerThread.seekTo(newFraction);
                 }
