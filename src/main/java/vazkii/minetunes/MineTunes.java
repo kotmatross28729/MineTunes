@@ -8,6 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
 import vazkii.minetunes.config.MTConfig;
 import vazkii.minetunes.key.KeyBindings;
 import vazkii.minetunes.lib.LibMisc;
@@ -29,12 +30,12 @@ public class MineTunes {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        KeyBindings.init();
-
-        MinecraftForge.EVENT_BUS.register(new HUDHandler());
-
-        MTConfig.findCompoundAndLoad();
-        PlaylistList.findCompoundAndLoad();
+        if (event.getSide() == Side.CLIENT) {
+            KeyBindings.init();
+            MinecraftForge.EVENT_BUS.register(new HUDHandler());
+            MTConfig.findCompoundAndLoad();
+            PlaylistList.findCompoundAndLoad();
+        }
     }
 
     public static void startMusicPlayerThread() {
