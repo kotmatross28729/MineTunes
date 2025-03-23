@@ -20,15 +20,25 @@ public class HandlerVolume extends KeyHandler {
 
     @Override
     public void keyDown(KeyBinding key) {
-        if (isInValidGui() && MineTunes.musicPlayerThread != null) if (GuiScreen.isCtrlKeyDown()) {
-            if (!down) {
-                if (positive) MineTunes.musicPlayerThread.prev();
-                else MineTunes.musicPlayerThread.next(true);
+        if (isInValidGui() && MineTunes.musicPlayerThread != null) {
+            
+//            if (GuiScreen.isCtrlKeyDown() && GuiScreen.isShiftKeyDown()) {
+//                if (!down) {
+//                    if (positive) MineTunes.musicPlayerThread.seekTo(0.7F);
+//                    else MineTunes.musicPlayerThread.seekTo(0.5F);
+//                }
+//            } else 
+                
+                if (GuiScreen.isCtrlKeyDown()) {
+                if (!down) {
+                    if (positive) MineTunes.musicPlayerThread.prev();
+                    else MineTunes.musicPlayerThread.next(true);
+                }
+            } else {
+                float gainVal = 0.5F * KeySubscriber.delta;
+                MineTunes.musicPlayerThread.addGain(positive ? -gainVal : gainVal);
+                HUDHandler.showVolume = true;
             }
-        } else {
-            float gainVal = 0.5F * KeySubscriber.delta;
-            MineTunes.musicPlayerThread.addGain(positive ? -gainVal : gainVal);
-            HUDHandler.showVolume = true;
         }
 
         down = true;

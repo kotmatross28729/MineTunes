@@ -140,6 +140,34 @@ public class ThreadMusicPlayer extends Thread {
     public void onPlaylistChange() {
         lastSongs.clear();
     }
+    
+    
+    public void seekTo(float fraction) {
+        if (playingMP3 == null) {
+            return;
+        }
+    
+        fraction = Math.max(fraction, 0F);
+        fraction = Math.min(fraction, 1F);
+        
+        int targetFrame = (int) (fraction * playingMP3.frameCount);
+        seekToFrame(targetFrame);
+    }
+    
+    public void seekToFrame(int frame) {
+        if (playingMP3 == null) {
+            return;
+        }
+        frame = Math.max(0, Math.min(frame, playingMP3.frameCount - 1));
+        
+        resetPlayer();
+        pauseFrames = frame;
+        queued = true;
+        
+        if (!paused) {
+            paused = false;
+        }
+    }
 
     public float getGain() {
         if (player == null) return gain;
@@ -177,6 +205,10 @@ public class ThreadMusicPlayer extends Thread {
     }
 
     public int getFramesPlayed() {
+        if (paused) {
+            return pauseFrames;
+        }
+        
         return player == null ? 0 : player.getFrames();
     }
 
