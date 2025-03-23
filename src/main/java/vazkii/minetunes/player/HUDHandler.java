@@ -127,7 +127,7 @@ public final class HUDHandler {
                     spectrumLeft += textWidth - spectrumWidth / 2;
                 }
 
-                if(MTConfig.hudMode == 1) {
+                if (MTConfig.hudMode == 1) {
                     renderSpectrumAnalyzer(mc, spectrumLeft, y + padding + 20, spectrumWidth, 150, noteColor, topSide);
                 }
 

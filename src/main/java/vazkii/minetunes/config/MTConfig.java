@@ -20,7 +20,7 @@ public final class MTConfig {
     private static final String TAG_TIME_DISPLAY_MODE = "timeDisplayMode";
 
     public static int playMode = 0;
-    
+
     // 0 - Disabled
     // 1 - Name & Spectrum Analyzer
     // 2 - Name Only
@@ -38,7 +38,7 @@ public final class MTConfig {
             if (cmp.hasNoTags()) findCompoundAndWrite(file);
             else {
                 playMode = cmp.getInteger(TAG_PLAY_MODE);
-    
+
                 hudMode = cmp.getInteger(TAG_HUD_ENABLED);
                 hudRelativeTo = cmp.getInteger(TAG_HUD_RELATIVE_TO);
                 hudPosX = cmp.getInteger(TAG_HUD_POS_X);

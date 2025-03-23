@@ -56,7 +56,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
     @Override
     public void initGui() {
         buttonList.clear();
-        
+
         buttonList.add(
             devOptionsButton = new GuiButton(
                 1,
@@ -74,13 +74,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 20,
                 StatCollector.translateToLocal("minetunes.gui.showHud_true")));
         buttonList.add(
-            moveHudButton = new GuiButton(
-                    3,
-                    105,
-                    5,
-                    70,
-                    20,
-                    StatCollector.translateToLocal("minetunes.gui.move")));
+            moveHudButton = new GuiButton(3, 105, 5, 70, 20, StatCollector.translateToLocal("minetunes.gui.move")));
 
         buttonList.add(
             playModeButton = new GuiButton(
@@ -126,20 +120,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 20,
                 StatCollector.translateToLocal("minetunes.gui.reload")));
 
-        buttonList.add(
-            songPositionSlider = new GuiMusicSlider(
-                9,
-                185,
-                30,
-                170,
-                20,
-                "",
-                "",
-                0,
-                100,
-                0,
-                false,
-                false));
+        buttonList.add(songPositionSlider = new GuiMusicSlider(9, 185, 30, 170, 20, "", "", 0, 100, 0, false, false));
 
         playlistNameField = new GuiTextField(fontRendererObj, 360, 30, 125, 20);
         playlistNameField.setMaxStringLength(32);
@@ -174,7 +155,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
         GL11.glScalef(3F, 3F, 3F);
         boolean unicode = mc.fontRenderer.getUnicodeFlag();
         mc.fontRenderer.setUnicodeFlag(true);
-        //mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
+        // mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
         mc.fontRenderer.setUnicodeFlag(unicode);
         GL11.glPopMatrix();
 
