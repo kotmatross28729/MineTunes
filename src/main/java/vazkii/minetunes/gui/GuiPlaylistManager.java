@@ -53,6 +53,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
     GuiMusicSlider songPositionSlider;
 
+    GuiPauseButton pauseButton;
+
     @Override
     public void initGui() {
         buttonList.clear();
@@ -120,6 +122,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 20,
                 StatCollector.translateToLocal("minetunes.gui.reload")));
 
+        buttonList.add(pauseButton = new GuiPauseButton(10, 335, 55, 20, 20, ""));
+
         buttonList.add(songPositionSlider = new GuiMusicSlider(9, 185, 30, 170, 20, "", "", 0, 100, 0, false, false));
 
         playlistNameField = new GuiTextField(fontRendererObj, 360, 30, 125, 20);
@@ -136,6 +140,10 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
     @Override
     public void drawScreen(int mx, int my, float partialTicks) {
+        if (MineTunes.musicPlayerThread != null) {
+            pauseButton.paused = MineTunes.musicPlayerThread.isPaused();
+        }
+
         musicSlot.drawScreen(mx, my, partialTicks);
         playlistSlot.drawScreen(mx, my, partialTicks);
 
@@ -317,6 +325,11 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 if (MineTunes.musicPlayerThread != null) {
                     float newFraction = (float) songPositionSlider.sliderValue;
                     MineTunes.musicPlayerThread.seekTo(newFraction);
+                }
+            }
+            case 10 -> {
+                if (MineTunes.musicPlayerThread != null) {
+                    MineTunes.musicPlayerThread.pauseOrPlay();
                 }
             }
         }
