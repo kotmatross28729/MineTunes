@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.util.EnumChatFormatting;
@@ -50,6 +51,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
     public List<MP3Metadata> visibleSongs = new ArrayList();
 
+    GuiMusicSlider songPositionSlider;
+
     @Override
     public void initGui() {
         buttonList.clear();
@@ -74,6 +77,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 StatCollector.translateToLocal("minetunes.gui.showHud_true")));
         buttonList.add(
             moveHudButton = new GuiButton(3, 225, 5, 70, 20, StatCollector.translateToLocal("minetunes.gui.move")));
+
         buttonList.add(
             playModeButton = new GuiButton(
                 4,
@@ -118,6 +122,21 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 20,
                 StatCollector.translateToLocal("minetunes.gui.reload")));
 
+        buttonList.add(
+            songPositionSlider = new GuiMusicSlider(
+                9,
+                width / 2 - 100,
+                height - 75,
+                200,
+                20,
+                "",
+                "",
+                0,
+                100,
+                0,
+                false,
+                false));
+
         playlistNameField = new GuiTextField(fontRendererObj, width - 150, 30, 125, 20);
         playlistNameField.setMaxStringLength(32);
 
@@ -154,6 +173,10 @@ public class GuiPlaylistManager extends GuiMineTunes {
         mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
         mc.fontRenderer.setUnicodeFlag(unicode);
         GL11.glPopMatrix();
+
+        if (MineTunes.musicPlayerThread != null && MineTunes.musicPlayerThread.getPlayingMetadata() != null) {
+            songPositionSlider.sliderValue = MineTunes.musicPlayerThread.getFractionPlayed();
+        }
 
         boolean hasName = !playlistNameField.getText()
             .isEmpty();
@@ -229,20 +252,18 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
     @Override
     protected void mouseClicked(int b, int x, int y) {
-        if (MineTunes.playlistCreatorThread == null) playlistNameField.mouseClicked(b, x, y);
+        if (MineTunes.playlistCreatorThread == null) 
+            playlistNameField.mouseClicked(b, x, y);
+        
         searchField.mouseClicked(b, x, y);
+        songPositionSlider.mousePressed(Minecraft.getMinecraft(), x, y);
+
         super.mouseClicked(b, x, y);
     }
 
     @Override
     public void handleMouseInput() {
-        // int mouseX = Mouse.getEventX() * width / mc.displayWidth;
-        // int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
-
         super.handleMouseInput();
-        // if(musicSlot != null)
-        // musicSlot.handleMouseInput(mouseX, mouseY);
-        // playlistSlot.handleMouseInput(mouseX, mouseY);
     }
 
     public void updateVisibleSongs() {
@@ -307,6 +328,12 @@ public class GuiPlaylistManager extends GuiMineTunes {
             case 8 -> {
                 MTConfig.timeDisplayMode = MTConfig.timeDisplayMode == 1 ? 0 : MTConfig.timeDisplayMode + 1;
                 configChanged = true;
+            }
+            case 9 -> {
+                if(MineTunes.musicPlayerThread != null) {
+                    float newFraction = (float) songPositionSlider.sliderValue;
+                    MineTunes.musicPlayerThread.seekTo(newFraction);
+                }
             }
         }
 
