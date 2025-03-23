@@ -56,32 +56,36 @@ public class GuiPlaylistManager extends GuiMineTunes {
     @Override
     public void initGui() {
         buttonList.clear();
-
-        buttonList.add(new GuiButton(0, 5, 55, 100, 20, StatCollector.translateToLocal("minetunes.gui.exit")));
+        
         buttonList.add(
             devOptionsButton = new GuiButton(
                 1,
-                5,
-                30,
+                185,
+                55,
                 100,
                 20,
                 StatCollector.translateToLocal("minetunes.gui.devTools")));
-
         buttonList.add(
             showHudButton = new GuiButton(
                 2,
-                125,
+                5,
                 5,
                 90,
                 20,
                 StatCollector.translateToLocal("minetunes.gui.showHud_true")));
         buttonList.add(
-            moveHudButton = new GuiButton(3, 225, 5, 70, 20, StatCollector.translateToLocal("minetunes.gui.move")));
+            moveHudButton = new GuiButton(
+                    3,
+                    105,
+                    5,
+                    70,
+                    20,
+                    StatCollector.translateToLocal("minetunes.gui.move")));
 
         buttonList.add(
             playModeButton = new GuiButton(
                 4,
-                125,
+                5,
                 30,
                 170,
                 20,
@@ -90,7 +94,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
         buttonList.add(
             timeDisplayModeButton = new GuiButton(
                 8,
-                305,
+                185,
                 5,
                 170,
                 20,
@@ -99,7 +103,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
         buttonList.add(
             selectPlaylistButton = new GuiButton(
                 5,
-                width - 150,
+                360,
                 55,
                 125,
                 20,
@@ -125,9 +129,9 @@ public class GuiPlaylistManager extends GuiMineTunes {
         buttonList.add(
             songPositionSlider = new GuiMusicSlider(
                 9,
-                width / 2 - 100,
-                height - 75,
-                200,
+                185,
+                30,
+                170,
                 20,
                 "",
                 "",
@@ -137,10 +141,10 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 false,
                 false));
 
-        playlistNameField = new GuiTextField(fontRendererObj, width - 150, 30, 125, 20);
+        playlistNameField = new GuiTextField(fontRendererObj, 360, 30, 125, 20);
         playlistNameField.setMaxStringLength(32);
 
-        searchField = new GuiTextField(fontRendererObj, 125, 55, 170, 20);
+        searchField = new GuiTextField(fontRendererObj, 5, 55, 170, 20);
         searchField.setFocused(true);
 
         playlistSlot = new GuiPlaylistSlot(this);
@@ -170,7 +174,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
         GL11.glScalef(3F, 3F, 3F);
         boolean unicode = mc.fontRenderer.getUnicodeFlag();
         mc.fontRenderer.setUnicodeFlag(true);
-        mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
+        //mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
         mc.fontRenderer.setUnicodeFlag(unicode);
         GL11.glPopMatrix();
 
@@ -192,7 +196,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
                 .drawStringWithShadow(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
         } else {
             mc.fontRenderer
-                .drawString(StatCollector.translateToLocal("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
+                .drawString(StatCollector.translateToLocal("minetunes.gui.playlistCreator"), 360, 20, 0xFFFFFF);
 
             if (!hasName) {
                 String name = StatCollector.translateToLocal("minetunes.gui.playlistName");
@@ -209,8 +213,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
         devOptionsButton.visible = isCtrlKeyDown() && isShiftKeyDown();
         selectPlaylistButton.visible = !creatingPlaylist;
         selectPlaylistButton.enabled = hasName;
-        showHudButton.displayString = StatCollector.translateToLocal("minetunes.gui.showHud_" + MTConfig.hudEnabled);
-        moveHudButton.enabled = MTConfig.hudEnabled;
+        showHudButton.displayString = StatCollector.translateToLocal("minetunes.gui.showHud_" + MTConfig.hudMode);
+        moveHudButton.enabled = MTConfig.hudMode > 0;
         playModeButton.displayString = StatCollector.translateToLocal("minetunes.gui.playMode" + MTConfig.playMode);
         timeDisplayModeButton.displayString = StatCollector
             .translateToLocal("minetunes.gui.timeDisplayMode" + MTConfig.timeDisplayMode);
@@ -294,7 +298,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
             case 0 -> mc.displayGuiScreen(null);
             case 1 -> mc.displayGuiScreen(new GuiDevTools());
             case 2 -> {
-                MTConfig.hudEnabled = !MTConfig.hudEnabled;
+                MTConfig.hudMode = MTConfig.hudMode == 2 ? 0 : MTConfig.hudMode + 1;
                 configChanged = true;
             }
             case 3 -> mc.displayGuiScreen(new GuiMoveHUD());

@@ -12,7 +12,7 @@ public final class MTConfig {
     private static final String CONFIG_FILE = "config.dat";
 
     private static final String TAG_PLAY_MODE = "playMode";
-    private static final String TAG_HUD_ENABLED = "hudEnabled";
+    private static final String TAG_HUD_ENABLED = "hudMode";
     private static final String TAG_HUD_RELATIVE_TO = "hudRelativeTo";
     private static final String TAG_HUD_POS_X = "hudPosX";
     private static final String TAG_HUD_POS_Y = "hudPosY";
@@ -20,7 +20,11 @@ public final class MTConfig {
     private static final String TAG_TIME_DISPLAY_MODE = "timeDisplayMode";
 
     public static int playMode = 0;
-    public static boolean hudEnabled = true;
+    
+    // 0 - Disabled
+    // 1 - Name & Spectrum Analyzer
+    // 2 - Name Only
+    public static int hudMode = 1;
     public static int hudRelativeTo = 0;
     public static int hudPosX = 0;
     public static int hudPosY = 0;
@@ -34,8 +38,8 @@ public final class MTConfig {
             if (cmp.hasNoTags()) findCompoundAndWrite(file);
             else {
                 playMode = cmp.getInteger(TAG_PLAY_MODE);
-
-                hudEnabled = cmp.getBoolean(TAG_HUD_ENABLED);
+    
+                hudMode = cmp.getInteger(TAG_HUD_ENABLED);
                 hudRelativeTo = cmp.getInteger(TAG_HUD_RELATIVE_TO);
                 hudPosX = cmp.getInteger(TAG_HUD_POS_X);
                 hudPosY = cmp.getInteger(TAG_HUD_POS_Y);
@@ -60,7 +64,7 @@ public final class MTConfig {
 
         cmp.setInteger(TAG_PLAY_MODE, playMode);
 
-        cmp.setBoolean(TAG_HUD_ENABLED, hudEnabled);
+        cmp.setInteger(TAG_HUD_ENABLED, hudMode);
         cmp.setInteger(TAG_HUD_RELATIVE_TO, hudRelativeTo);
         cmp.setInteger(TAG_HUD_POS_X, hudPosX);
         cmp.setInteger(TAG_HUD_POS_Y, hudPosY);

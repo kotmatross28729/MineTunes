@@ -25,7 +25,7 @@ public final class HUDHandler {
 
     @SubscribeEvent
     public void onDrawScreen(RenderGameOverlayEvent.Post event) {
-        if (event.type == ElementType.ALL && MTConfig.hudEnabled) {
+        if (event.type == ElementType.ALL && MTConfig.hudMode > 0) {
             Minecraft mc = Minecraft.getMinecraft();
             int width = event.resolution.getScaledWidth();
             int height = event.resolution.getScaledHeight();
@@ -127,13 +127,14 @@ public final class HUDHandler {
                     spectrumLeft += textWidth - spectrumWidth / 2;
                 }
 
-                renderSpectrumAnalyzer(mc, spectrumLeft, y + padding + 20, spectrumWidth, 150, noteColor, topSide);
+                if(MTConfig.hudMode == 1) {
+                    renderSpectrumAnalyzer(mc, spectrumLeft, y + padding + 20, spectrumWidth, 150, noteColor, topSide);
+                }
 
                 mc.fontRenderer.drawStringWithShadow(title, textLeft + diffTitle, y + padding, 0xFFFFFF);
                 mc.fontRenderer.drawStringWithShadow(artist, textLeft + diffArtist, y + 10 + padding, 0xDDDDDD);
                 if (showVolume)
                     mc.fontRenderer.drawStringWithShadow(volume, textLeft + diffVolume, y + 20 + padding, 0xDDDDDD);
-
             }
         }
     }
@@ -194,7 +195,7 @@ public final class HUDHandler {
     private static boolean shouldRenderHUD() {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.currentScreen != null && mc.currentScreen instanceof GuiMoveHUD) return true;
-        return MTConfig.hudEnabled;
+        return MTConfig.hudMode > 0;
     }
 
     public static Point getCoords(int screenX, int screenY, int relativePos, int posX, int posY) {
